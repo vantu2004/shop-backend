@@ -14,9 +14,10 @@ import com.vantu.shop_backend.dto.ImageDto;
 import com.vantu.shop_backend.enums.OwnerType;
 import com.vantu.shop_backend.exceptions.ResourceNotFoundException;
 import com.vantu.shop_backend.model.Image;
-import com.vantu.shop_backend.model.Product;
 import com.vantu.shop_backend.repository.ImageRepository;
+import com.vantu.shop_backend.service.category.ICategoryService;
 import com.vantu.shop_backend.service.product.IProductService;
+import com.vantu.shop_backend.service.user.IUserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +29,8 @@ public class ImageService implements IImageService {
 
 	private final ImageRepository imageRepository;
 	private final IProductService iProductService;
+	private final IUserService iUserService;
+	private final ICategoryService iCategoryService;
 
 	@Override
 	public Image getImageById(Long id) {
@@ -47,8 +50,6 @@ public class ImageService implements IImageService {
 	@Override
 	public List<ImageDto> saveImage(List<MultipartFile> multipartFiles, Long ownerId, OwnerType ownerType) {
 		// TODO Auto-generated method stub
-		Product product = this.iProductService.getProductById(productId);
-
 		List<ImageDto> imageDtos = new ArrayList<ImageDto>();
 		for (MultipartFile multipartFile : multipartFiles) {
 			try {
@@ -56,7 +57,10 @@ public class ImageService implements IImageService {
 				image.setName(multipartFile.getOriginalFilename());
 				image.setType(multipartFile.getContentType());
 				image.setImage(new SerialBlob(multipartFile.getBytes()));
-				image.setProduct(product);
+
+				setImageOwner(image, ownerId, ownerType);
+
+				image.setOwnerType(ownerType);
 
 				String downloadUrl = PREFIX_DOWNLOAD_URL + image.getId();
 				image.setDownloadUrl(downloadUrl);
@@ -79,6 +83,23 @@ public class ImageService implements IImageService {
 		}
 
 		return imageDtos;
+	}
+
+	private void setImageOwner(Image image, Long ownerId, OwnerType ownerType) {
+		// TODO Auto-generated method stub
+		switch (ownerType) {
+		case PRODUCT:
+			image.setProduct(this.iProductService.getProductById(ownerId));
+			break;
+		case USER:
+			image.setUser(this.iUserService.getUserById(ownerId));
+			break;
+		case CATEGORY:
+			image.setCategory(this.iCategoryService.getCategoryById(ownerId));
+			break;
+		default:
+			throw new IllegalArgumentException("Unsupported OwnerType: " + ownerType);
+		}
 	}
 
 	@Override

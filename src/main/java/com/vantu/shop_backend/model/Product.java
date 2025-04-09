@@ -1,7 +1,8 @@
 package com.vantu.shop_backend.model;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -41,5 +42,6 @@ public class Product {
 	private Category category;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Image> images;
+	@Builder.Default
+	private Set<Image> images = new HashSet<>();
 }

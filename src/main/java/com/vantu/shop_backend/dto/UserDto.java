@@ -10,6 +10,7 @@ public class UserDto {
 	private String firstName;
 	private String lastName;
 	private String email;
+	private ImageDto image;
 	private CartDto cart;
 	private Set<OrderDto> orders;
 }

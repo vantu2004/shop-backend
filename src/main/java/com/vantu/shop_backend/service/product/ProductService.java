@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.vantu.shop_backend.dto.ImageDto;
 import com.vantu.shop_backend.dto.ProductDto;
+import com.vantu.shop_backend.enums.OwnerType;
 import com.vantu.shop_backend.exceptions.AlreadyExistsException;
 import com.vantu.shop_backend.exceptions.ProductNotFoundException;
 import com.vantu.shop_backend.model.Category;
@@ -46,11 +47,11 @@ public class ProductService implements IProductService {
 
 	@Override
 	public Product addProduct(AddProductRequest addProductRequest) {
-		
+
 		if (isExistProduct(addProductRequest.getName(), addProductRequest.getBrand())) {
 			throw new AlreadyExistsException("Product Already Exists, You May Update This Instead.");
 		}
-		
+
 		/*
 		 * tìm category, nếu có thì createProduct, nếu ko thì tạo mới category và
 		 * createProduct
@@ -170,7 +171,7 @@ public class ProductService implements IProductService {
 	@Override
 	public ProductDto convertProductEntityToProductDto(Product product) {
 		ProductDto productDto = this.modelMapper.map(product, ProductDto.class);
-		List<Image> images = this.imageRepository.findByProductId(product.getId());
+		List<Image> images = this.imageRepository.findByOwnerIdAndOwnerType(product.getId(), OwnerType.PRODUCT);
 		/**
 		 * Biến đổi List<Image> thành một Stream để xử lý từng phần tử tuần tự.
 		 *

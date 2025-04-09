@@ -2,13 +2,19 @@ package com.vantu.shop_backend.model;
 
 import java.sql.Blob;
 
+import com.vantu.shop_backend.enums.OwnerType;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,4 +48,16 @@ public class Image {
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
+
+	@OneToOne
+	@JoinColumn(name = "user_id", unique = true)
+	private User user;
+
+	@OneToOne
+	@JoinColumn(name = "category_id", unique = true)
+	private Category category;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "owner_type")
+	private OwnerType ownerType;
 }

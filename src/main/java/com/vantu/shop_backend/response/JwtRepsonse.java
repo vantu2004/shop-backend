@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class JwtRepsonse {
-	private Long id;
-	private String token;
+	private Long userId;
+	private String accessToken;
+	private String refreshToken;
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vantu.shop_backend.dto.ImageDto;
+import com.vantu.shop_backend.enums.OwnerType;
 import com.vantu.shop_backend.exceptions.ResourceNotFoundException;
 import com.vantu.shop_backend.model.Image;
 import com.vantu.shop_backend.response.ApiResponse;
@@ -34,9 +35,9 @@ public class ImageController {
 
 	@PostMapping("/add")
 	public ResponseEntity<ApiResponse> saveImages(@RequestParam List<MultipartFile> multipartFiles,
-			@RequestParam Long productId) {
+			@RequestParam Long ownerId, @RequestParam OwnerType ownerType) {
 		try {
-			List<ImageDto> imageDtos = this.iImageService.saveImage(multipartFiles, productId);
+			List<ImageDto> imageDtos = this.iImageService.saveImage(multipartFiles, ownerId, ownerType);
 			return ResponseEntity.ok(new ApiResponse("Upload Success!", imageDtos));
 		} catch (Exception e) {
 			// TODO: handle exception
