@@ -4,10 +4,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.vantu.shop_backend.dto.UserDto;
 import com.vantu.shop_backend.model.User;
 
 public class ShopUserDetails implements UserDetails {
@@ -17,9 +19,15 @@ public class ShopUserDetails implements UserDetails {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private ModelMapper modelMapper;
 	private User user;
 
 	public ShopUserDetails(User user) {
+		/*
+		 * phải khởi tạo kiểu này để tránh sửa code bên ShopUserDetailsService và class
+		 * ko phải bean nên phải khởi tạo thủ công
+		 */
+		this.modelMapper = new ModelMapper();
 		this.user = user;
 	}
 
@@ -51,5 +59,9 @@ public class ShopUserDetails implements UserDetails {
 	// dùng để tạo jwt bên class JwtUtils
 	public Long getId() {
 		return this.user.getId();
+	}
+
+	public UserDto getUserDto() {
+		return this.modelMapper.map(this.user, UserDto.class);
 	}
 }

@@ -128,7 +128,6 @@ public class ShopConfig {
 						
 
 						// UserController
-						.requestMatchers("/api/v1/users/user/id/**").hasAnyAuthority("USER")
 						.requestMatchers("/api/v1/users/**").hasAnyAuthority("ADMIN")
 
 						// AuthController

@@ -12,12 +12,12 @@ import java.util.function.Function;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.vantu.shop_backend.security.user.ShopUserDetails;
+import com.vantu.shop_backend.security.user.ShopUserDetailsService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -30,9 +30,11 @@ import io.jsonwebtoken.security.Keys;
 public class JwtService {
 
 	private final String secretKeyBase64;
+	private final ShopUserDetailsService shopUserDetailsService;
 
-	public JwtService() {
+	public JwtService(ShopUserDetailsService shopUserDetailsService) {
 		this.secretKeyBase64 = generateSecretKey();
+		this.shopUserDetailsService = shopUserDetailsService;
 	}
 
 	// Phương thức này tạo khóa bí mật ngẫu nhiên và mã hóa nó bằng Base64
@@ -57,11 +59,13 @@ public class JwtService {
 	}
 
 	// Phương thức này sẽ tạo JWT token cho tên người dùng (userName)
-	public String generateToken(Authentication authentication) {
+	public String generateToken(String email) {
 
-		// authentication đại diện cho thông tin xác thực của người dùng
-		// getPrincipal() trả về đối tượng đại diện người dùng đã xác thực
-		ShopUserDetails shopUserDetails = (ShopUserDetails) authentication.getPrincipal();
+		/*
+		 * kiểu trả về của loadByUserName là UserDetails nhưng vẫn có thể ép về
+		 * ShopUserDetails theo tính đa hình
+		 */
+		ShopUserDetails shopUserDetails = (ShopUserDetails) this.shopUserDetailsService.loadUserByUsername(email);
 
 		List<String> roles = shopUserDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 

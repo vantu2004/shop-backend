@@ -63,8 +63,10 @@ public class Cart {
 				cartItem.setUnitPrice(BigDecimal.ZERO);
 			}
 
-			// mặc định khi add item vào cart thì bên hàm addItemToCart đã thực hiện tính
-			// toán totalPrice
+			/*
+			 * mặc định khi add item vào cart thì bên hàm addItemToCart đã thực hiện tính
+			 * toán totalPrice
+			 */
 			return cartItem.getTotalPrice();
 		}).reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
