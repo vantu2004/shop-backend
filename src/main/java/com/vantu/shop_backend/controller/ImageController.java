@@ -62,14 +62,19 @@ public class ImageController {
 			ByteArrayResource resource = new ByteArrayResource(
 					image.getImage().getBytes(1, (int) image.getImage().length()));
 
-			// Trả về ảnh dưới dạng file download
+//			// Trả về ảnh dưới dạng file download
+//			return ResponseEntity.ok()
+//					// Đặt kiểu file (image/png, image/jpeg, ...)
+//					.contentType(MediaType.parseMediaType(image.getType()))
+//					// Đặt tên file tải về
+//					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + image.getName() + "\"")
+//					// Trả về dữ liệu file
+//					.body(resource);
+			
+			// cách trên là tải ảnh về, như vậy thì bên android ko hiển thị trực tiếp được
 			return ResponseEntity.ok()
-					// Đặt kiểu file (image/png, image/jpeg, ...)
-					.contentType(MediaType.parseMediaType(image.getType()))
-					// Đặt tên file tải về
-					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + image.getName() + "\"")
-					// Trả về dữ liệu file
-					.body(resource);
+				    .contentType(MediaType.parseMediaType(image.getType()))
+				    .body(resource);
 		} catch (Exception e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

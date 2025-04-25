@@ -108,7 +108,8 @@ public class ShopConfig {
 						
 						// ImageController
 						.requestMatchers("/api/v1/images/image/download/**").permitAll()
-						.requestMatchers("/api/v1/images/**").hasAnyAuthority("ADMIN", "USER")
+						//.requestMatchers("/api/v1/images/**").hasAnyAuthority("ADMIN", "USER")
+						.requestMatchers("/api/v1/images/**").permitAll()
 						
 						// OrderController
 						.requestMatchers("/api/v1/orders/**").hasAnyAuthority("USER")
