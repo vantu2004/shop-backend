@@ -132,7 +132,14 @@ public class ShopConfig {
 						.requestMatchers("/api/v1/users/**").hasAnyAuthority("ADMIN")
 
 						// AuthController
-						.requestMatchers("/api/v1/auth/**").permitAll());
+						.requestMatchers("/api/v1/auth/**").permitAll()
+
+						.requestMatchers("/swagger-ui/**",
+								"/v3/api-docs/**",
+								"/v2/api-docs",
+								"/swagger-resources/**",
+								"/swagger-ui.html",
+								"/webjars/**").permitAll());
 		
 		// Cung cấp AuthenticationProvider (như DaoAuthenticationProvider)
 		http.authenticationProvider(authProvider());
