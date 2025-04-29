@@ -114,9 +114,9 @@ public class UserService implements IUserService {
 			throw new ResourceNotFoundException("User not found with email: " + email);
 		}
 
-		if (user.isVerified()) {
-			throw new AlreadyVerifiedException("User is already verified.");
-		}
+//		if (user.isVerified()) {
+//			throw new AlreadyVerifiedException("User is already verified.");
+//		}
 
 		if (!otp.equals(user.getOtp())) {
 			throw new InvalidOtpException("Invalid OTP.");

@@ -92,7 +92,8 @@ public class ShopConfig {
 				// Các URL bảo mật yêu cầu xác thực và phân quyền theo vai trò
 				.authorizeHttpRequests(auth -> auth
 
-						// CartController, CartItemController
+						// CartController, CartItemControlle
+
 						.requestMatchers("/api/v1/carts/**", "/api/v1/cart-items/**").hasAnyAuthority("USER")
 
 						// CategoryController
@@ -104,7 +105,7 @@ public class ShopConfig {
 						.requestMatchers("/api/v1/images/image/download/**").permitAll()
 						// .requestMatchers("/api/v1/images/**").hasAnyAuthority("ADMIN", "USER")
 						.requestMatchers("/api/v1/images/**").permitAll()
-
+						
 						// OrderController
 						.requestMatchers("/api/v1/orders/**").hasAnyAuthority("USER")
 
@@ -119,7 +120,14 @@ public class ShopConfig {
 						.requestMatchers("/api/v1/users/**").hasAnyAuthority("ADMIN")
 
 						// AuthController
-						.requestMatchers("/api/v1/auth/**").permitAll());
+						.requestMatchers("/api/v1/auth/**").permitAll()
+
+						.requestMatchers("/swagger-ui/**",
+								"/v3/api-docs/**",
+								"/v2/api-docs",
+								"/swagger-resources/**",
+								"/swagger-ui.html",
+								"/webjars/**").permitAll());
 
 		// Cung cấp AuthenticationProvider (như DaoAuthenticationProvider)
 		http.authenticationProvider(authProvider());
