@@ -142,14 +142,10 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public void resetPassword(String email, String newPassword, String otp) {
+	public void resetPassword(String email, String newPassword) {
 		User user = userRepository.findByEmail(email);
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found with email: " + email);
-		}
-
-		if (!otp.equals(user.getOtp())) {
-			throw new InvalidOtpException("Invalid OTP.");
 		}
 
 		String encodedPassword = passwordEncoder.encode(newPassword);

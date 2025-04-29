@@ -20,7 +20,7 @@ public interface IUserService {
 
 	void verify(String email, String otp);
 
-	void resetPassword(String email, String newPassword, String otp);
+	void resetPassword(String email, String newPassword);
 
 	void resendOtp(String email);
 

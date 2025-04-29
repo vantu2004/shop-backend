@@ -167,10 +167,9 @@ public class AuthController {
 	}
 
 	@PostMapping("/reset-password")
-	public ResponseEntity<ApiResponse> resetPassword(@RequestParam String email, @RequestParam String newPassword,
-			@RequestParam String otp) {
+	public ResponseEntity<ApiResponse> resetPassword(@RequestParam String email, @RequestParam String newPassword) {
 		try {
-			this.iUserService.resetPassword(email, newPassword, otp);
+			this.iUserService.resetPassword(email, newPassword);
 			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Success!", null));
 		} catch (UsernameNotFoundException | InvalidOtpException e) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse(e.getMessage(), null));
