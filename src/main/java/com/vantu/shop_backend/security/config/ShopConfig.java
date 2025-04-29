@@ -93,47 +93,34 @@ public class ShopConfig {
 				.authorizeHttpRequests(auth -> auth
 
 						// CartController, CartItemController
-						.requestMatchers(
-								"/api/v1/carts/**", 
-								"/api/v1/cart-items/**")
-						.hasAnyAuthority("USER")
+						.requestMatchers("/api/v1/carts/**", "/api/v1/cart-items/**").hasAnyAuthority("USER")
 
 						// CategoryController
-						.requestMatchers(
-								"/api/v1/categories/all", 
-								"/api/v1/categories/category/id/**",
+						.requestMatchers("/api/v1/categories/all", "/api/v1/categories/category/id/**",
 								"/api/v1/categories/category/name/**")
-						.permitAll()
-						.requestMatchers("/api/v1/categories/**").hasAnyAuthority("ADMIN")
-						
+						.permitAll().requestMatchers("/api/v1/categories/**").hasAnyAuthority("ADMIN")
+
 						// ImageController
 						.requestMatchers("/api/v1/images/image/download/**").permitAll()
-						//.requestMatchers("/api/v1/images/**").hasAnyAuthority("ADMIN", "USER")
+						// .requestMatchers("/api/v1/images/**").hasAnyAuthority("ADMIN", "USER")
 						.requestMatchers("/api/v1/images/**").permitAll()
-						
+
 						// OrderController
 						.requestMatchers("/api/v1/orders/**").hasAnyAuthority("USER")
-						
+
 						// ProductController
-						.requestMatchers(
-								"/api/v1/products/all",
-								"/api/v1/products/product/id/**",
-								"/api/v1/products/product/name/**",
-								"/api/v1/products/brand/name/**",
-								"/api/v1/products/category/name/**",
-								"/api/v1/products/by/productname-and-brandname",
-								"/api/v1/products/by/categoryname-and-brandname",
-								"/api/v1/products/count"
-							).permitAll()
-						.requestMatchers("/api/v1/products/**").hasAuthority("ADMIN")
-						
+						.requestMatchers("/api/v1/products/all", "/api/v1/products/product/id/**",
+								"/api/v1/products/product/name/**", "/api/v1/products/brand/name/**",
+								"/api/v1/products/category/name/**", "/api/v1/products/by/productname-and-brandname",
+								"/api/v1/products/by/categoryname-and-brandname", "/api/v1/products/count")
+						.permitAll().requestMatchers("/api/v1/products/**").hasAuthority("ADMIN")
 
 						// UserController
 						.requestMatchers("/api/v1/users/**").hasAnyAuthority("ADMIN")
 
 						// AuthController
 						.requestMatchers("/api/v1/auth/**").permitAll());
-		
+
 		// Cung cấp AuthenticationProvider (như DaoAuthenticationProvider)
 		http.authenticationProvider(authProvider());
 		/*

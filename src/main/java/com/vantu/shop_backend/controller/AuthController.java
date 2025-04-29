@@ -14,13 +14,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.vantu.shop_backend.dto.UserDto;
 import com.vantu.shop_backend.exceptions.AlreadyExistsException;
 import com.vantu.shop_backend.exceptions.InvalidOtpException;
 import com.vantu.shop_backend.exceptions.ResourceNotFoundException;
 import com.vantu.shop_backend.model.RefreshToken;
 import com.vantu.shop_backend.model.User;
+import com.vantu.shop_backend.oauth.GoogleService;
 import com.vantu.shop_backend.request.CreateUserRequest;
+import com.vantu.shop_backend.request.GoogleLoginRequest;
 import com.vantu.shop_backend.request.LoginRequest;
 import com.vantu.shop_backend.response.ApiResponse;
 import com.vantu.shop_backend.response.JwtResponse;
@@ -44,6 +47,7 @@ public class AuthController {
 	private final JwtService jwtService;
 	private final IUserService iUserService;
 	private final RefreshTokenService refreshTokenService;
+	private final GoogleService googleService;
 
 	@PostMapping("/login")
 	public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
@@ -71,6 +75,37 @@ public class AuthController {
 		} catch (AuthenticationException e) {
 			// TODO Auto-generated catch block
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse(e.getMessage(), null));
+		}
+	}
+
+	@PostMapping("/login/google")
+	public ResponseEntity<ApiResponse> loginWithGoogle(@RequestBody GoogleLoginRequest request) {
+		try {
+			// Validate the id_token with Google
+			GoogleIdToken.Payload payload = this.googleService.verifyIdToken(request.getIdToken());
+
+			if (payload == null) {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+						.body(new ApiResponse("Invalid Google ID token", null));
+			}
+
+			String email = payload.getEmail();
+			String name = (String) payload.get("name");
+			String pictureUrl = (String) payload.get("picture");
+
+			// Kiểm tra user, có thì lấy ko thì tạo
+			UserDto userDto = this.iUserService.findOrCreateUser(email, name, pictureUrl);
+
+			// Generate JWT token and refresh token
+			String accessToken = jwtService.generateToken(email);
+			RefreshToken refreshToken = refreshTokenService.createRefreshToken(email);
+
+			JwtResponse jwtResponse = new JwtResponse(userDto, accessToken, refreshToken.getRefreshToken());
+
+			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Success!", jwtResponse));
+
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
 		}
 	}
 

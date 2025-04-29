@@ -23,4 +23,6 @@ public interface IUserService {
 	void resetPassword(String email, String newPassword, String otp);
 
 	void resendOtp(String email);
+
+	UserDto findOrCreateUser(String email, String name, String pictureUrl);
 }

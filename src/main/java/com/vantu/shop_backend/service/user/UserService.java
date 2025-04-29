@@ -154,8 +154,44 @@ public class UserService implements IUserService {
 
 		String encodedPassword = passwordEncoder.encode(newPassword);
 		user.setPassword(encodedPassword);
-		user.setOtp(null); // clear OTP after use
+		// clear OTP after use
+		user.setOtp(null);
 		userRepository.save(user);
+	}
+
+	@Override
+	public UserDto findOrCreateUser(String email, String name, String pictureUrl) {
+
+		User user = this.userRepository.findByEmail(email);
+		if (user != null) {
+			return this.convertUserEntityToUserDto(user);
+		}
+
+		user = new User();
+		user.setEmail(email);
+		this.setName(name, user);
+		user.setVerified(true);
+
+		// mặc định set role USER
+		user.getRoles().add(this.roleRepository.findByName("USER"));
+
+		User savedUser = this.userRepository.save(user);
+
+		return this.convertUserEntityToUserDto(savedUser);
+	}
+
+	private void setName(String name, User user) {
+		// TODO Auto-generated method stub
+		String[] names = name.split(" ");
+		if (names.length < 2) {
+			user.setFirstName(name);
+		} else {
+			String firstName = names[0];
+			String lastName = name.replaceFirst(firstName + " ", "");
+
+			user.setFirstName(firstName);
+			user.setLastName(lastName);
+		}
 	}
 
 }

@@ -3,7 +3,6 @@ package com.vantu.shop_backend.controller;
 import java.util.List;
 
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
