@@ -48,6 +48,10 @@ public class Image {
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
+	
+	@ManyToOne
+	@JoinColumn(name = "branch_id")
+	private Branch branch;
 
 	@OneToOne
 	@JoinColumn(name = "user_id", unique = true)

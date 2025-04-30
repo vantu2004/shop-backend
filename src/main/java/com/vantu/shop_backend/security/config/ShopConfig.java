@@ -92,8 +92,11 @@ public class ShopConfig {
 				// Các URL bảo mật yêu cầu xác thực và phân quyền theo vai trò
 				.authorizeHttpRequests(auth -> auth
 
+						// BrandController
+						.requestMatchers("/api/v1/branches/all").permitAll()
+						.requestMatchers("/api/v1/branches/**").hasAnyAuthority("ADMIN")
+						
 						// CartController, CartItemControlle
-
 						.requestMatchers("/api/v1/carts/**", "/api/v1/cart-items/**").hasAnyAuthority("USER")
 
 						// CategoryController

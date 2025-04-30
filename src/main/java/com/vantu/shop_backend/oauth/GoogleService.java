@@ -20,8 +20,6 @@ public class GoogleService {
 			GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
 					GoogleNetHttpTransport.newTrustedTransport(), new GsonFactory())
 					.setAudience(Collections.singletonList(googleClientId)).build();
-
-			System.out.println(idTokenString + "\n" + googleClientId);
 			
 			GoogleIdToken idToken = verifier.verify(idTokenString);
 			if (idToken != null) {

@@ -15,6 +15,7 @@ import com.vantu.shop_backend.enums.OwnerType;
 import com.vantu.shop_backend.exceptions.ResourceNotFoundException;
 import com.vantu.shop_backend.model.Image;
 import com.vantu.shop_backend.repository.ImageRepository;
+import com.vantu.shop_backend.service.branch.IBranchService;
 import com.vantu.shop_backend.service.category.ICategoryService;
 import com.vantu.shop_backend.service.product.IProductService;
 import com.vantu.shop_backend.service.user.IUserService;
@@ -31,6 +32,7 @@ public class ImageService implements IImageService {
 	private final IProductService iProductService;
 	private final IUserService iUserService;
 	private final ICategoryService iCategoryService;
+	private final IBranchService iBranchService;
 
 	@Override
 	public Image getImageById(Long id) {
@@ -96,6 +98,9 @@ public class ImageService implements IImageService {
 			break;
 		case CATEGORY:
 			image.setCategory(this.iCategoryService.getCategoryById(ownerId));
+			break;
+		case BRANCH:
+			image.setBranch(this.iBranchService.getBranchById(ownerId));
 			break;
 		default:
 			throw new IllegalArgumentException("Unsupported OwnerType: " + ownerType);
