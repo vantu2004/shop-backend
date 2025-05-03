@@ -93,9 +93,9 @@ public class ShopConfig {
 				.authorizeHttpRequests(auth -> auth
 
 						// BrandController
-						.requestMatchers("/api/v1/branches/all").permitAll()
-						.requestMatchers("/api/v1/branches/**").hasAnyAuthority("ADMIN")
-						
+						.requestMatchers("/api/v1/branches/all").permitAll().requestMatchers("/api/v1/branches/**")
+						.hasAnyAuthority("ADMIN")
+
 						// CartController, CartItemControlle
 						.requestMatchers("/api/v1/carts/**", "/api/v1/cart-items/**").hasAnyAuthority("USER")
 
@@ -108,7 +108,7 @@ public class ShopConfig {
 						.requestMatchers("/api/v1/images/image/download/**").permitAll()
 						// .requestMatchers("/api/v1/images/**").hasAnyAuthority("ADMIN", "USER")
 						.requestMatchers("/api/v1/images/**").permitAll()
-						
+
 						// OrderController
 						.requestMatchers("/api/v1/orders/**").hasAnyAuthority("USER")
 
@@ -120,17 +120,16 @@ public class ShopConfig {
 						.permitAll().requestMatchers("/api/v1/products/**").hasAuthority("ADMIN")
 
 						// UserController
+						.requestMatchers("/api/v1/users/user/favorite/**").hasAnyAuthority("USER")
+						.requestMatchers("/api/v1/users/user/id/**").hasAnyAuthority("USER")
 						.requestMatchers("/api/v1/users/**").hasAnyAuthority("ADMIN")
 
 						// AuthController
 						.requestMatchers("/api/v1/auth/**").permitAll()
 
-						.requestMatchers("/swagger-ui/**",
-								"/v3/api-docs/**",
-								"/v2/api-docs",
-								"/swagger-resources/**",
-								"/swagger-ui.html",
-								"/webjars/**").permitAll());
+						.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v2/api-docs", "/swagger-resources/**",
+								"/swagger-ui.html", "/webjars/**")
+						.permitAll());
 
 		// Cung cấp AuthenticationProvider (như DaoAuthenticationProvider)
 		http.authenticationProvider(authProvider());

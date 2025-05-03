@@ -20,7 +20,6 @@ import com.vantu.shop_backend.request.UserUpdateRequest;
 import com.vantu.shop_backend.response.ApiResponse;
 import com.vantu.shop_backend.service.user.IUserService;
 
-
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -65,6 +64,19 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Success!", userDto));
 		} catch (ResourceNotFoundException e) {
 			// TODO: handle exception
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+		}
+	}
+
+	@PutMapping("/user/favorite/{userId}/{productId}")
+	public ResponseEntity<ApiResponse> saveFavoriteProduct(@PathVariable Long userId, @PathVariable Long productId) {
+		try {
+			User updatedUser = this.iUserService.handleSaveFavoriteProduct(userId, productId);
+			UserDto userDto = this.iUserService.convertUserEntityToUserDto(updatedUser);
+
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new ApiResponse("Toggled favorite successfully!", userDto));
+		} catch (ResourceNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
 		}
 	}

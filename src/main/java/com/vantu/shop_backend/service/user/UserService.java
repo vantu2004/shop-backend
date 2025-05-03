@@ -2,6 +2,7 @@ package com.vantu.shop_backend.service.user;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
@@ -12,15 +13,16 @@ import org.springframework.stereotype.Service;
 
 import com.vantu.shop_backend.dto.UserDto;
 import com.vantu.shop_backend.exceptions.AlreadyExistsException;
-import com.vantu.shop_backend.exceptions.AlreadyVerifiedException;
 import com.vantu.shop_backend.exceptions.InvalidOtpException;
 import com.vantu.shop_backend.exceptions.ResourceNotFoundException;
+import com.vantu.shop_backend.model.Product;
 import com.vantu.shop_backend.model.User;
 import com.vantu.shop_backend.repository.RoleRepository;
 import com.vantu.shop_backend.repository.UserRepository;
 import com.vantu.shop_backend.request.CreateUserRequest;
 import com.vantu.shop_backend.request.UserUpdateRequest;
 import com.vantu.shop_backend.service.email.IEmailService;
+import com.vantu.shop_backend.service.product.IProductService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,6 +35,7 @@ public class UserService implements IUserService {
 	private final PasswordEncoder passwordEncoder;
 	private final RoleRepository roleRepository;
 	private final IEmailService iEmailService;
+	private final IProductService iProductService;
 
 	@Override
 	public User getUserById(Long userId) {
@@ -70,6 +73,22 @@ public class UserService implements IUserService {
 
 			return this.userRepository.save(existingUser);
 		}).orElseThrow(() -> new ResourceNotFoundException("User Not Found!"));
+	}
+
+	@Override
+	public User handleSaveFavoriteProduct(Long userId, Long productId) {
+		User user = this.getUserById(userId);
+		Product product = this.iProductService.getProductById(productId);
+
+		Set<Product> favorites = user.getFavoriteProducts();
+
+		if (favorites.contains(product)) {
+			favorites.remove(product);
+		} else {
+			favorites.add(product);
+		}
+
+		return this.userRepository.save(user);
 	}
 
 	@Override

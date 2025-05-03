@@ -25,4 +25,6 @@ public interface IUserService {
 	void resendOtp(String email);
 
 	UserDto findOrCreateUser(String email, String name, String pictureUrl);
+
+	User handleSaveFavoriteProduct(Long userId, Long productId);
 }

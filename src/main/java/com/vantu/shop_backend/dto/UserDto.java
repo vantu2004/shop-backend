@@ -13,4 +13,5 @@ public class UserDto {
 	private ImageDto image;
 	private CartDto cart;
 	private Set<OrderDto> orders;
+	private Set<ProductDto> favoriteProducts;
 }
