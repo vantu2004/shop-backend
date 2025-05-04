@@ -14,5 +14,7 @@ public class OrderDto {
 	private LocalDate orderDate;
 	private OrderStatus orderStatus;
 	private BigDecimal totalAmount;
+	private String address;
 	private Set<OrderItemDto> orderItems;
+	private BranchDto branch;
 }

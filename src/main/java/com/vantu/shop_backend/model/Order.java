@@ -38,16 +38,22 @@ public class Order {
 	private Long id;
 
 	private LocalDate orderDate;
-	
+
 	private OrderStatus orderStatus;
-	
+
 	private BigDecimal totalAmount;
+
+	private String address;
 
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Builder.Default
 	private Set<OrderItem> orderItems = new HashSet<OrderItem>();
-	
+
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
+
+	@ManyToOne
+	@JoinColumn(name = "branch_id")
+	private Branch branch;
 }
