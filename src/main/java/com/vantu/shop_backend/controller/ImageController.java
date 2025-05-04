@@ -6,15 +6,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vantu.shop_backend.dto.ImageDto;
@@ -71,6 +63,7 @@ public class ImageController {
 //					.body(resource);
 			
 			// cách trên là tải ảnh về, như vậy thì bên android ko hiển thị trực tiếp được
+			System.out.println(image.getType());
 			return ResponseEntity.ok()
 				    .contentType(MediaType.parseMediaType(image.getType()))
 				    .body(resource);
@@ -80,13 +73,14 @@ public class ImageController {
 		}
 	}
 
-	@PutMapping("/image/{imageId}/update")
+	@PutMapping(value = "/image/{imageId}/update")
 	public ResponseEntity<ApiResponse> updateImage(@RequestBody MultipartFile multipartFile,
 			@PathVariable long imageId) {
 		try {
 			Image image = this.iImageService.getImageById(imageId);
 			if (image != null && !multipartFile.isEmpty()) {
 				this.iImageService.updateImage(multipartFile, imageId);
+				System.out.println(image.getType());
 				return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Update Success!", null));
 			}
 		} catch (ResourceNotFoundException e) {
