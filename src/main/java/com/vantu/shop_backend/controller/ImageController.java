@@ -63,7 +63,6 @@ public class ImageController {
 //					.body(resource);
 			
 			// cách trên là tải ảnh về, như vậy thì bên android ko hiển thị trực tiếp được
-			System.out.println(image.getType());
 			return ResponseEntity.ok()
 				    .contentType(MediaType.parseMediaType(image.getType()))
 				    .body(resource);

@@ -92,7 +92,7 @@ public class ShopConfig {
 				// Các URL bảo mật yêu cầu xác thực và phân quyền theo vai trò
 				.authorizeHttpRequests(auth -> auth
 
-						// BrandController
+						// BranchController
 						.requestMatchers("/api/v1/branches/all").permitAll().requestMatchers("/api/v1/branches/**")
 						.hasAnyAuthority("ADMIN")
 
