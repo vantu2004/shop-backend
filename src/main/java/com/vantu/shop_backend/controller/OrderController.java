@@ -7,11 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vantu.shop_backend.dto.OrderDto;
+import com.vantu.shop_backend.exceptions.CouldNotCancelOrder;
 import com.vantu.shop_backend.exceptions.ResourceNotFoundException;
 import com.vantu.shop_backend.response.ApiResponse;
 import com.vantu.shop_backend.service.order.IOrderService;
@@ -26,14 +28,30 @@ public class OrderController {
 	private final IOrderService iOrderService;
 
 	@PostMapping("/add")
-	public ResponseEntity<ApiResponse> placeOrder(@RequestParam Long userId) {
+	public ResponseEntity<ApiResponse> placeOrder(@RequestParam Long userId, @RequestParam Long branchId,
+			@RequestParam String address) {
 		try {
-			OrderDto orderDto = this.iOrderService.placeOrder(userId);
+			OrderDto orderDto = this.iOrderService.placeOrder(userId, branchId, address);
 
 			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Success!", orderDto));
 		} catch (ResourceNotFoundException e) {
 			// TODO: handle exception
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+		}
+	}
+
+	@PutMapping("/cancel")
+	public ResponseEntity<ApiResponse> cancelOrder(@RequestParam Long orderId) {
+		try {
+			OrderDto orderDto = this.iOrderService.cancelOrder(orderId);
+
+			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Success!", orderDto));
+		} catch (ResourceNotFoundException e) {
+			// TODO: handle exception
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+		} catch (CouldNotCancelOrder e) {
+			// TODO: handle exception
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse(e.getMessage(), null));
 		}
 	}
 

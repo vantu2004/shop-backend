@@ -1,7 +1,7 @@
 package com.vantu.shop_backend.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +9,8 @@ import com.vantu.shop_backend.enums.OrderStatus;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,8 +39,9 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private LocalDate orderDate;
+	private Date orderDate;
 
+	@Enumerated(EnumType.STRING)
 	private OrderStatus orderStatus;
 
 	private BigDecimal totalAmount;

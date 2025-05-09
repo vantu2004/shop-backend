@@ -92,7 +92,7 @@ public class ShopConfig {
 				// Các URL bảo mật yêu cầu xác thực và phân quyền theo vai trò
 				.authorizeHttpRequests(auth -> auth
 
-						// BrandController
+						// BranchController
 						.requestMatchers("/api/v1/branches/all").permitAll().requestMatchers("/api/v1/branches/**")
 						.hasAnyAuthority("ADMIN")
 
@@ -122,7 +122,7 @@ public class ShopConfig {
 						// UserController
 						.requestMatchers("/api/v1/users/user/favorite/**").hasAnyAuthority("USER")
 						.requestMatchers("/api/v1/users/user/id/**").hasAnyAuthority("USER")
-						.requestMatchers("/api/v1/users/**").hasAnyAuthority("ADMIN")
+						.requestMatchers("/api/v1/users/**").hasAnyAuthority("ADMIN", "USER") // Api update user khong hoat dong doi voi user
 
 						// AuthController
 						.requestMatchers("/api/v1/auth/**").permitAll()
