@@ -1,9 +1,11 @@
 package com.vantu.shop_backend.service.product;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.vantu.shop_backend.dto.ImageDto;
@@ -148,7 +150,7 @@ public class ProductService implements IProductService {
 	@Override
 	public List<Product> getProductByName(String productName) {
 		// TODO Auto-generated method stub
-		return this.productRepository.findByName(productName);
+		return this.productRepository.findByNameContainingIgnoreCase(productName);
 	}
 
 	@Override
@@ -161,6 +163,32 @@ public class ProductService implements IProductService {
 	public Long countProductsByBrandName(String productName, String brandName) {
 		// TODO Auto-generated method stub
 		return this.productRepository.countByNameAndBrand(productName, brandName);
+	}
+
+	@Override
+	public List<Product> getSortedProduct(String sortBy, String sortOrder) {
+		Sort sort = sortOrder.equalsIgnoreCase("asc") ?
+				    Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+		return productRepository.findAll(sort);
+
+	}
+	@Override
+	public List<Product> getSortedProductByDateAdded(String sortOrder) {
+		return (sortOrder.equalsIgnoreCase("asc"))
+				? this.productRepository.findAllByOrderByDateAddedAsc()
+				: this.productRepository.findAllByOrderByDateAddedDesc();
+	}
+
+	@Override
+	public List<Product> getSortedProductByPrice(String sortOrder) {
+		return (sortOrder.equalsIgnoreCase("asc"))
+				? this.productRepository.findAllByOrderByPriceAsc()
+				: this.productRepository.findAllByOrderByPriceDesc();
+	}
+
+	@Override
+	public List<Product> getProductsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
+		return productRepository.findByPriceRange(minPrice, maxPrice);
 	}
 
 	@Override
@@ -186,4 +214,6 @@ public class ProductService implements IProductService {
 
 		return productDto;
 	}
+
+
 }

@@ -1,5 +1,6 @@
 package com.vantu.shop_backend.controller;
 
+import com.vantu.shop_backend.request.UserPasswordUpdateRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -64,6 +65,16 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Success!", userDto));
 		} catch (ResourceNotFoundException e) {
 			// TODO: handle exception
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+		}
+	}
+
+	@PutMapping("/user/{userId}/update-password")
+	public ResponseEntity<ApiResponse> updatePassword(@RequestBody UserPasswordUpdateRequest request, @PathVariable Long userId) {
+		try {
+			this.iUserService.updatePassword(request, userId);
+			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Password updated successfully!", null));
+		} catch (ResourceNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
 		}
 	}

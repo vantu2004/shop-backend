@@ -1,5 +1,6 @@
 package com.vantu.shop_backend.service.product;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.vantu.shop_backend.dto.ProductDto;
@@ -33,4 +34,13 @@ public interface IProductService {
 	List<ProductDto> getConvertedProducts(List<Product> products);
 	
 	ProductDto convertProductEntityToProductDto(Product product);
+
+	List<Product> getSortedProduct(String sortBy, String sortOrder);
+
+	List<Product> getSortedProductByDateAdded(String sortOrder);
+
+	List<Product> getSortedProductByPrice(String sortOrder);
+
+	public List<Product> getProductsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice);
+
 }

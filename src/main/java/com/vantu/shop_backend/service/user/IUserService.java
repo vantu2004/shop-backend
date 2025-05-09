@@ -3,6 +3,7 @@ package com.vantu.shop_backend.service.user;
 import com.vantu.shop_backend.dto.UserDto;
 import com.vantu.shop_backend.model.User;
 import com.vantu.shop_backend.request.CreateUserRequest;
+import com.vantu.shop_backend.request.UserPasswordUpdateRequest;
 import com.vantu.shop_backend.request.UserUpdateRequest;
 
 public interface IUserService {
@@ -21,6 +22,8 @@ public interface IUserService {
 	void verify(String email, String otp);
 
 	void resetPassword(String email, String newPassword);
+
+	void updatePassword(UserPasswordUpdateRequest request, Long userId);
 
 	void resendOtp(String email);
 

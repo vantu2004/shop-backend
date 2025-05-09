@@ -3,6 +3,8 @@ package com.vantu.shop_backend.model;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -36,6 +38,9 @@ public class Product {
 	// quantiy
 	private int inventory;
 	private String description;
+
+	@CreationTimestamp
+	private LocalDateTime dateAdded;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "category_id")
