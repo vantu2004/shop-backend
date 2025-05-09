@@ -54,4 +54,11 @@ public class RefreshTokenService {
 		return false;
 	}
 
+	public void deleteByToken(String refreshToken) {
+		// TODO Auto-generated method stub
+		RefreshToken ref = this.refreshTokenRepository.findByRefreshToken(refreshToken)
+				.orElseThrow(() -> new ResourceNotFoundException("Token Not Found!"));
+		this.refreshTokenRepository.delete(ref);
+	}
+
 }

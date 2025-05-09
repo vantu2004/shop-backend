@@ -109,6 +109,17 @@ public class AuthController {
 		}
 	}
 
+	@PostMapping("/logout")
+	public ResponseEntity<ApiResponse> logout(@RequestParam String refreshToken) {
+		try {
+			this.refreshTokenService.deleteByToken(refreshToken);
+
+			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Success!", null));
+		} catch (ResourceNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+		}
+	}
+
 	// yêu cầu cấp lại accessToken
 	@PostMapping("/refresh-token")
 	public ResponseEntity<ApiResponse> createNewAccessToken(@RequestParam String reft) {
