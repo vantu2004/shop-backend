@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
+import com.vantu.shop_backend.request.UserPasswordUpdateRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -171,6 +172,17 @@ public class UserService implements IUserService {
 		user.setPassword(encodedPassword);
 		// clear OTP after use
 		user.setOtp(null);
+		userRepository.save(user);
+	}
+
+	@Override
+	public void updatePassword(UserPasswordUpdateRequest request, Long userId) {
+		User user = this.getUserById(userId);
+		if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+			throw new InvalidOtpException("Old password is incorrect.");
+		}
+
+		user.setPassword(passwordEncoder.encode(request.getNewPassword()));
 		userRepository.save(user);
 	}
 

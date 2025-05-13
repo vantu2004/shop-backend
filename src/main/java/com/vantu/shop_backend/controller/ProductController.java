@@ -1,5 +1,6 @@
 package com.vantu.shop_backend.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -89,7 +90,7 @@ public class ProductController {
 	}
 
 	@DeleteMapping("/product/{productId}/delete")
-	public ResponseEntity<ApiResponse> updateProduct(@PathVariable Long productId) {
+	public ResponseEntity<ApiResponse> deleteProduct(@PathVariable Long productId) {
 		try {
 			this.iProductService.deleteProductById(productId);
 			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Success!", null));
@@ -200,4 +201,76 @@ public class ProductController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
 		}
 	}
+
+	@GetMapping("/sort")
+	public ResponseEntity<ApiResponse> sortProducts(@RequestParam String sortBy, @RequestParam String sortOrder) {
+		try {
+			List<Product> products = this.iProductService.getSortedProduct(sortBy, sortOrder);
+
+			if (products == null || products.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Not Found!", null));
+			}
+
+			List<ProductDto> productDtos = this.iProductService.getConvertedProducts(products);
+
+			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Success!", productDtos));
+		} catch (Exception e) {
+			// TODO: handle exception
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+		}
+	}
+
+	@GetMapping("/sort/by/dateAdded")
+	public ResponseEntity<ApiResponse> sortProductsByDateAdded(@RequestParam String sortOrder) {
+		try {
+			List<Product> products = this.iProductService.getSortedProductByDateAdded(sortOrder);
+
+			if (products == null || products.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Not Found!", null));
+			}
+
+			List<ProductDto> productDtos = this.iProductService.getConvertedProducts(products);
+
+			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Success!", productDtos));
+		} catch (Exception e) {
+			// TODO: handle exception
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+		}
+	}
+
+	@GetMapping("/filter/by/price")
+	public ResponseEntity<ApiResponse> filterProductsByPrice(
+			@RequestParam("minPrice") BigDecimal minPrice,
+			@RequestParam("maxPrice") BigDecimal maxPrice) {
+		try {
+			List<Product> products = this.iProductService.getProductsByPriceRange(minPrice, maxPrice);
+
+			if (products == null || products.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Not Found!", null));
+			}
+
+			List<ProductDto> productDtos = this.iProductService.getConvertedProducts(products);
+
+			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Success!", productDtos));
+		} catch (Exception e) {
+			// TODO: handle exception
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+		}	}
+
+	@GetMapping("/sort/by/price")
+	public ResponseEntity<ApiResponse> sortProductsByPrice(@RequestParam String sortOrder) {
+		try {
+			List<Product> products = this.iProductService.getSortedProductByPrice(sortOrder);
+
+			if (products == null || products.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Not Found!", null));
+			}
+
+			List<ProductDto> productDtos = this.iProductService.getConvertedProducts(products);
+
+			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Success!", productDtos));
+		} catch (Exception e) {
+			// TODO: handle exception
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+		}	}
 }
