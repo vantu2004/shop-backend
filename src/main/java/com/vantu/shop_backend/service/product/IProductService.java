@@ -17,6 +17,8 @@ public interface IProductService {
 
 	Product updateProduct(ProductUpdateRequest productUpdateRequest, Long productId);
 
+	Product increaseProductSoldCount(Long productId, Integer quantity);
+
 	List<Product> getAllProducts();
 
 	List<Product> getProductByCategoryName(String categoryName);

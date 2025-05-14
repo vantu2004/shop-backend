@@ -112,8 +112,12 @@ public class ShopConfig {
 						// OrderController
 						.requestMatchers("/api/v1/orders/**").hasAnyAuthority("USER")
 
+						// PaymentController
+						.requestMatchers("/api/v1/payment/**").permitAll()
+
 						// ProductController
 						.requestMatchers("/api/v1/products/all", "/api/v1/products/product/id/**",
+								"/api/v1/products/product/sold/**",
 								"/api/v1/products/product/name/**", "/api/v1/products/brand/name/**",
 								"/api/v1/products/category/name/**", "/api/v1/products/sort/**", "/api/v1/products/by/productname-and-brandname",
 								"/api/v1/products/by/categoryname-and-brandname", "/api/v1/products/count")

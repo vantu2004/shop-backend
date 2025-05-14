@@ -100,6 +100,21 @@ public class ProductController {
 		}
 	}
 
+	@PutMapping("/product/sold")
+	public ResponseEntity<ApiResponse> increaseProductSoldCount(
+			@RequestParam Long productId,
+			@RequestParam Integer quantity) {
+		try {
+			Product product = iProductService.increaseProductSoldCount(productId, quantity);
+			ProductDto productDto = this.iProductService.convertProductEntityToProductDto(product);
+			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Success!", productDto));
+		} catch (ProductNotFoundException e) {
+			// TODO: handle exception
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+		}
+
+	}
+
 	@GetMapping("/by/productname-and-brandname")
 	public ResponseEntity<ApiResponse> getProductByNameAndBrand(@RequestParam String productName,
 			@RequestParam String brandName) {

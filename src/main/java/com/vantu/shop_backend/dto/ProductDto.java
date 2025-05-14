@@ -13,6 +13,7 @@ public class ProductDto {
 	private String brand;
 	private BigDecimal price;
 	private int inventory;
+	private int soldCount;
 	private String description;
 	private LocalDateTime dateAdded;
 	private CategoryDto category;

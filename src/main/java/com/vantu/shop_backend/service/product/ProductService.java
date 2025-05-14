@@ -110,6 +110,16 @@ public class ProductService implements IProductService {
 		}).orElseThrow(() -> new ProductNotFoundException("Product Not Found!"));
 	}
 
+	public Product increaseProductSoldCount(Long productId, Integer quantity) {
+		Product product = this.productRepository.findById(productId)
+				.orElseThrow(() -> new ProductNotFoundException("Product Not Found!"));
+
+		int soldQuantity = (quantity != null && quantity > 0) ? quantity : 1;
+		product.setSoldCount(product.getSoldCount() + soldQuantity);
+
+		return this.productRepository.save(product);
+	}
+
 	public Product updateExistingProduct(Product existingProduct, ProductUpdateRequest productUpdateRequest) {
 		existingProduct.setName(productUpdateRequest.getName());
 		existingProduct.setBrand(productUpdateRequest.getBrand());

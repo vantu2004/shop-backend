@@ -37,6 +37,7 @@ public class Product {
 	private BigDecimal price;
 	// quantiy
 	private int inventory;
+	private int soldCount = 0;
 	private String description;
 
 	@CreationTimestamp
