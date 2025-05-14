@@ -37,7 +37,7 @@ public class OrderService implements IOrderService {
 	private final ModelMapper modelMapper;
 
 	@Override
-	public OrderDto placeOrder(Long userId, Long branchId, String address) {
+	public OrderDto placeOrder(Long userId, Long branchId, String address, String paymentMethod, String cardType) {
 		// TODO Auto-generated method stub
 		Cart cart = this.iCartService.getCartByUserId(userId);
 		Branch branch = this.iBranchService.getBranchById(branchId);
@@ -49,6 +49,8 @@ public class OrderService implements IOrderService {
 		order.setAddress(address);
 		order.setOrderItems(orderItems);
 		order.setBranch(branch);
+		order.setPaymentMethod(paymentMethod);
+		order.setCardType(cardType);
 
 		Order savedOrder = this.orderRepository.save(order);
 

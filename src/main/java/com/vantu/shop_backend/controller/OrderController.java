@@ -29,9 +29,9 @@ public class OrderController {
 
 	@PostMapping("/add")
 	public ResponseEntity<ApiResponse> placeOrder(@RequestParam Long userId, @RequestParam Long branchId,
-			@RequestParam String address) {
+			@RequestParam String address, @RequestParam String paymentMethod, @RequestParam String cardType) {
 		try {
-			OrderDto orderDto = this.iOrderService.placeOrder(userId, branchId, address);
+			OrderDto orderDto = this.iOrderService.placeOrder(userId, branchId, address, paymentMethod, cardType);
 
 			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Success!", orderDto));
 		} catch (ResourceNotFoundException e) {

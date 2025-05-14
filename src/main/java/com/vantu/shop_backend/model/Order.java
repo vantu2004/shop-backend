@@ -48,6 +48,10 @@ public class Order {
 
 	private String address;
 
+	private String paymentMethod;
+
+	private String cardType;
+
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Builder.Default
 	private Set<OrderItem> orderItems = new HashSet<OrderItem>();

@@ -6,7 +6,7 @@ import com.vantu.shop_backend.dto.OrderDto;
 import com.vantu.shop_backend.exceptions.CouldNotCancelOrder;
 
 public interface IOrderService {
-	OrderDto placeOrder(Long userId, Long branchId, String address);
+	OrderDto placeOrder(Long userId, Long branchId, String address, String paymentMethod, String cardType);
 
 	OrderDto getOrder(Long orderId);
 

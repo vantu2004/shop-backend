@@ -17,4 +17,6 @@ public class OrderDto {
 	private String address;
 	private Set<OrderItemDto> orderItems;
 	private BranchDto branch;
+	private String paymentMethod;
+	private String cardType;
 }
